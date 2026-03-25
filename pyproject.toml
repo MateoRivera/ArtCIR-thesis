@@ -26,7 +26,10 @@ classifiers = [
 #   "requests >= 2.25.0, < 3.0.0"
 #   "uvicorn[standard] >= 0.15.0"
 #   "torch @ https://download.pytorch.org/whl/..."
-dependencies = []
+dependencies = [
+    "ipykernel>=7.2.0",
+    "lightning==2.5.5",
+]
 
 # Optional extras: for features not all users need, e.g. pip install artcir-thesis[viz].
 # Unlike dependency-groups (below), extras ARE published with the package and visible
