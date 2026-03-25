@@ -5,10 +5,10 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "project-name"
+name = "artcir-thesis"
 version = "0.1.0"
-authors = [{ name = "author name", email = "author@email.com" }]
-description = "Project description"
+authors = [{ name = "Mateo Rivera Monsalve", email = "mateorm2301@gmail.com" }]
+description = "This thesis investigates Composed Image Retrieval (CIR) in the art domain, where a system takes a reference image and a textual modification and retrieves an artwork reflecting the described transformation. The main contributions are a novel art-domain CIR dataset and a systematic evaluation of retrieval and adaptation strategies."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12"
@@ -28,17 +28,17 @@ classifiers = [
 #   "torch @ https://download.pytorch.org/whl/..."
 dependencies = []
 
-# Optional extras: for features not all users need, e.g. pip install project-name[viz].
+# Optional extras: for features not all users need, e.g. pip install artcir-thesis[viz].
 # Unlike dependency-groups (below), extras ARE published with the package and visible
 # to downstream consumers. Use them for optional runtime features, not dev tooling.
-# Install: uv sync --extra viz  (or pip install project-name[viz])
+# Install: uv sync --extra viz  (or pip install artcir-thesis[viz])
 # [project.optional-dependencies]
 # viz = ["matplotlib >= 3.0"]
 
-# CLI entrypoint, uncomment to expose a `project-name` command after install.
-# The package is already runnable as `python -m project_name` via __main__.py.
+# CLI entrypoint, uncomment to expose a `artcir-thesis` command after install.
+# The package is already runnable as `python -m artcir_thesis` via __main__.py.
 # [project.scripts]
-# project-name = "project_name.cli:main"
+# artcir-thesis = "artcir_thesis.cli:main"
 
 # ---------------------------------------------------------------------------
 # Dependency groups are for local development only, NOT published to PyPI.
@@ -55,7 +55,7 @@ test = ["coverage >= 7.3.0", "pytest >= 7.4.0", "pytest-cov >= 4.1.0"]
 # hatchling needs to know where the package lives when using a src/ layout.
 # This line is updated automatically by init.py when renaming the package.
 [tool.hatch.build.targets.wheel]
-packages = ["src/project_name"]
+packages = ["src/artcir_thesis"]
 
 # ruff handles both linting and formatting (replaces black, isort, flake8).
 # Lint:   uv run ruff check src/
@@ -70,7 +70,7 @@ line-length = 119
 # I: isort (import ordering)
 # D: pydocstyle
 select = ["E", "F", "UP", "I"]
-isort = { known-first-party = ['project_name', 'tests'] }
+isort = { known-first-party = ['artcir_thesis', 'tests'] }
 pydocstyle = { convention = 'google' }
 
 [tool.coverage.run]
