@@ -1,4 +1,4 @@
-from project_name.core import greet
+from artcir_thesis.core import greet
 
 
 def main() -> None:
