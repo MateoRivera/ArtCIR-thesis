@@ -182,7 +182,7 @@ def eval(args):
             if not os.path.exists(save_dir_name):
                 os.mkdir(save_dir_name)
 
-            with open(f"{save_dir_name}/circo_test_retrieval_results.json", 'w') as f:
+            with open(f"{save_dir_name}/artcir_test_retrieval_results.json", 'w') as f:
                 json.dump(res, f)
 
             # save for rerank
@@ -202,11 +202,11 @@ def save_for_rerank(query_features, candidate_features, query_ids, index_names, 
     cand_names = np.array([[index_names[item] for item in row] for row in index])
     query_names = query_ids 
 
-    with open(f"{save_dir_name}/circo_test_query_names.json", 'w') as f:
+    with open(f"{save_dir_name}/artcir_test_query_names.json", 'w') as f:
         json.dump(query_names.tolist(), f, indent=2)
-    with open(f"{save_dir_name}/circo_test_cand_names.json", 'w') as f:
+    with open(f"{save_dir_name}/artcir_test_cand_names.json", 'w') as f:
         json.dump(cand_names.tolist(), f, indent=2)
-    with open(f"{save_dir_name}/circo_test_scores.json", 'w') as f:
+    with open(f"{save_dir_name}/artcir_test_scores.json", 'w') as f:
         json.dump(scores, f, indent=2)
 
 if __name__ == "__main__":

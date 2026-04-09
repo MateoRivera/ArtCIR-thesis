@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --time=23:30:00
+#SBATCH --time=6-00:00:00
 #SBATCH --mail-type=ALL
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
 #SBATCH --partition=RTX
-#SBATCH --gpus=1
+#SBATCH --gpus=0
 #SBATCH --job-name=artcir_thesis/eval_zeroshot
-#SBATCH --mem=32GB
-#SBATCH --output=outputs/eval/eval_zeroshot.log
-#SBATCH --error=outputs/eval/eval_zeroshot.err
+#SBATCH --mem=64GB
+#SBATCH --output=outputs/eval/eval_zeroshot2.log
+#SBATCH --error=outputs/eval/eval_zeroshot2.err
 
 # execute script
 echo "Starting job at $(date) - Zero-shot evaluation task"
@@ -22,7 +22,7 @@ fi
 ORIGINAL_MODEL_ID="Qwen/Qwen2-VL-7B-Instruct"
 MODEL_ID="code-kunkun/LamRA-Ret"
 
-CUDA_VISIBLE_DEVICES='0,1' uv run accelerate launch --multi_gpu --main_process_port 29508 eval/eval_zeroshot/eval_circo.py \
+uv run accelerate launch --main_process_port 29508 scripts/eval/eval_zeroshot/eval_artcir.py \
     --annotation_path_prefix ./data/artcir/annotations \
     --image_path_prefix ./data/artcir/images \
     --split test \
