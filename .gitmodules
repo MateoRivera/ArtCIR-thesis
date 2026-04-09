@@ -1,0 +1,3 @@
+[submodule "src/artcir_thesis/submodules/lamra"]
+	path = src/artcir_thesis/submodules/lamra
+	url = https://github.com/MateoRivera/LamRA

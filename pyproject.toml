@@ -26,7 +26,23 @@ classifiers = [
 #   "requests >= 2.25.0, < 3.0.0"
 #   "uvicorn[standard] >= 0.15.0"
 #   "torch @ https://download.pytorch.org/whl/..."
-dependencies = []
+dependencies = [
+    "accelerate==0.31.0",
+    "deepspeed==0.13.1",
+    "matplotlib==3.9.2",
+    "numpy>=1.26.0",
+    "pandas==2.2.3",
+    "peft==0.11.1",
+    "pillow>=12.2.0",
+    "pyyaml>=6.0.3",
+    "qwen-vl-utils>=0.0.14",
+    "requests==2.32.3",
+    "scipy==1.14.1",
+    "torch==2.3.1",
+    "torchvision==0.18.1",
+    "tqdm>=4.67.3",
+    "transformers",
+]
 
 # Optional extras: for features not all users need, e.g. pip install ArtCIR-thesis[viz].
 # Unlike dependency-groups (below), extras ARE published with the package and visible
@@ -78,3 +94,6 @@ source = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv.sources]
+transformers = { git = "https://github.com/huggingface/transformers.git", rev = "66bc4def9505fa7c7fe4aa7a248c34a026bb552b" }
