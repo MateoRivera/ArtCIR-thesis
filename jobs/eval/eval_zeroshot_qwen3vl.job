@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --time=6-00:00:00
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --partition=RTX
+#SBATCH --gpus=1
+#SBATCH --job-name=artcir_thesis/eval_zeroshot_qwen3vl
+#SBATCH --mem=32GB
+#SBATCH --output=outputs/eval/eval_zeroshot_qwen3vl.log
+#SBATCH --error=outputs/eval/eval_zeroshot_qwen3vl.err
+
+# execute script
+echo "Starting job at $(date) - Zero-shot evaluation task"
+cd /nfs/home/rivera/artkb-dataset/ArtCIR-thesis || exit 1
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Error: uv is not available in PATH"
+    exit 1
+fi
+
+unset VIRTUAL_ENV
+uv run python scripts/eval/eval_zeroshot/eval_artcir_qwen3vl.py
+
+echo "Job finished at $(date)"
