@@ -35,67 +35,77 @@ class ArtCIRDataset(Dataset):
             return len(self.img_paths)
         return 0
 
-    def construct_messages(self, text=None, image=None):
-        if image is None:
-            message = [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": f"{text}\nSummarize above sentence in one word: "}
-                    ]
-                },
-                {
-                    "role": "assistant",
-                    "content": [
-                        {"type": "text", "text": f"<emb>."}
-                    ]
-                },
-            ]
-        elif text is None:
-            message = [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "image", "image": image},
-                        {"type": "text", "text": f"\nSummarize above image in one word: "}
-                    ]
-                },
-                {
-                    "role": "assistant",
-                    "content": [
-                        {"type": "text", "text": f"<emb>."}
-                    ]
-                },
-            ]
-        else:
-            message = [
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "image", "image": image},
-                        {"type": "text", "text": f"{text}"},
-                        {"type": "text", "text": f"\nSummarize above image and sentence in one word: "}
-                    ]
-                },
-                {
-                    "role": "assistant",
-                    "content": [
-                        {"type": "text", "text": f"<emb>."}
-                    ]
-                },
-            ]
-
+    def construct_messages(self, instruction=None, text=None, image=None):
+        # if image is None:
+        #     message = [
+        #         {
+        #             "role": "user",
+        #             "content": [
+        #                 {"type": "text", "text": f"{text}\nSummarize above sentence in one word: "}
+        #             ]
+        #         },
+        #         {
+        #             "role": "assistant",
+        #             "content": [
+        #                 {"type": "text", "text": f"<emb>."}
+        #             ]
+        #         },
+        #     ]
+        # elif text is None:
+        #     message = [
+        #         {
+        #             "role": "user",
+        #             "content": [
+        #                 {"type": "image", "image": image},
+        #                 {"type": "text", "text": f"\nSummarize above image in one word: "}
+        #             ]
+        #         },
+        #         {
+        #             "role": "assistant",
+        #             "content": [
+        #                 {"type": "text", "text": f"<emb>."}
+        #             ]
+        #         },
+        #     ]
+        # else:
+        #     message = [
+        #         {
+        #             "role": "user",
+        #             "content": [
+        #                 {"type": "image", "image": image},
+        #                 {"type": "text", "text": f"{text}"},
+        #                 {"type": "text", "text": f"\nSummarize above image and sentence in one word: "}
+        #             ]
+        #         },
+        #         {
+        #             "role": "assistant",
+        #             "content": [
+        #                 {"type": "text", "text": f"<emb>."}
+        #             ]
+        #         },
+        #     ]
+        message = {}
+        if instruction:
+            message['instruction'] = instruction
+        if text:
+            message['text'] = text        
+        message['image'] = image
+            
         return message
 
     def get_instance(self, index):
         if self.type == 'query':
-            instruction = "I'm looking for a similar everyday image with the described changes."
+            #instruction = "I'm looking for a similar everyday image with the described changes."
+            instruction = "I'm looking for a similar painting with the described changes."
             query_id = str(self.annotations[index]['qid'])
             relative_caption = self.annotations[index]['instruction']
-            relative_caption = f"{instruction} {relative_caption}"
+            #relative_caption = f"{instruction} {relative_caption}"
             reference_img_id = str(self.annotations[index]['reference_qid']) # Q26
             reference_img_path = self.img_paths[self.img_ids_indexes_map[reference_img_id]] # 98ce12c8-1.jpg
-            query_message = self.construct_messages(text=relative_caption, image=reference_img_path)
+            query_message = self.construct_messages(instruction=instruction, 
+                                                    text=relative_caption, 
+                                                    image=reference_img_path
+                            )
             return query_message
         elif self.type == 'image':
             image = self.img_paths[index]
