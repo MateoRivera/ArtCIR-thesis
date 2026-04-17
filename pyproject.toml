@@ -27,6 +27,7 @@ classifiers = [
 #   "uvicorn[standard] >= 0.15.0"
 #   "torch @ https://download.pytorch.org/whl/..."
 dependencies = [
+    "pymilvus[milvus-lite]>=2.6.12",
     "qwen3-vl-embedding",
 ]
 
