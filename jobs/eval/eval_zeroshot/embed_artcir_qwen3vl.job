@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --time=23:30:00
+#SBATCH --mail-type=ALL
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --partition=RTX
+#SBATCH --gpus=1
+#SBATCH --job-name=Qwen3VLEmbedder/embedding
+#SBATCH --mem=32GB
+#SBATCH --output=outputs/logs/eval/eval_zeroshot/embed_artcir_test_image.log
+#SBATCH --error=outputs/logs/eval/eval_zeroshot/embed_artcir_test_image.err
+
+# execute script
+echo "Starting job at $(date) - Embedding task"
+cd /nfs/home/rivera/artkb-dataset/ArtCIR-thesis || exit 1
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo "Error: uv is not available in PATH"
+    exit 1
+fi
+
+MODEL_ID="Qwen/Qwen3-VL-Embedding-2B"
+TYPE="image"
+SPLIT="test"
+BATCH_SIZE=16
+
+unset VIRTUAL_ENV
+uv run scripts/eval/eval_zeroshot/embed_artcir_qwen3vl.py \
+    --annotation_path_prefix ./data/artcir/annotations \
+    --image_path_prefix ./data/artcir/images \
+    --type $TYPE \
+    --split $SPLIT \
+    --batch_size $BATCH_SIZE \
+    --model_id $MODEL_ID \
+    --db_path ./data/artcir/database/embeddings_zeroshot.db
+
+echo "Job finished at $(date)"
