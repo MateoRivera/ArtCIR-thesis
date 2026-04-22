@@ -46,7 +46,8 @@ def recall(args):
                 collection_name=image_collection,
                 query_vector=query_embedding,
                 top_k=50,
-                output_fields=["artefact_id"]
+                output_fields=["artefact_id"],
+                filter=f"split == '{args.split}'"
             )
             top50_qids = [hit['entity']['artefact_id'] for hit in top50[0]]
 
