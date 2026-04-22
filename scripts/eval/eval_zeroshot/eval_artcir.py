@@ -2,7 +2,7 @@ from artcir_thesis.milvus import MilvusWrapper
 from pathlib import Path
 import argparse
 from tqdm import tqdm
-import sys
+import json
 
 # Libraries for the model
 import torch
@@ -26,6 +26,8 @@ def recall(args):
     ks = [1, 5, 10, 25, 50]
     recall_at = {k: [] for k in ks}
     map_at = {k: [] for k in ks}
+
+    retrieval_results = {'top50_predictions_by_reference_qid': {}}
     
     with MilvusWrapper(args.db_path) as db:
         query_collection = 'query_embeddings'
@@ -48,6 +50,10 @@ def recall(args):
             )
             top50_qids = [hit['entity']['artefact_id'] for hit in top50[0]]
 
+            # Store the top 50 per each triplet
+            retrieval_results['top50_predictions_by_reference_qid'][triplet['reference_qid']] = \
+                top50_qids
+
             # Compare the results with the ground truth
             target_qid = triplet['target_qid']
             
@@ -60,8 +66,19 @@ def recall(args):
         recall_at[k] = np.mean(recall_at[k]) * 100
         map_at[k] = np.mean(map_at[k]) * 100
 
-    print(recall_at)
-    print(map_at)
+    retrieval_results['summary_metrics'] = {
+        'recall_at': recall_at,
+        'map_at': map_at
+    }
+
+    output_path = args.retrieval_results_path_prefix / f'retrieval_results_{args.split}.json'
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_path, 'w', encoding='utf-8') as retrieval_results_file:
+        # Use indent=4 for human-readable output, remove for a smaller file size
+        json.dump(retrieval_results, retrieval_results_file, ensure_ascii=False, indent=4)
+
+    print('recall@:', recall_at)
+    print('map@:', map_at)
 
 
 
@@ -70,11 +87,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--annotation_path_prefix', type=str)
     parser.add_argument('--image_path_prefix', type=str)
-    # parser.add_argument('--type', choices=['query', 'image'], type=str)
     parser.add_argument('--split', choices=['train', 'val', 'test'], type=str)
-    # parser.add_argument('--batch_size', type=int)
-    # parser.add_argument('--model_id', choices=["Qwen/Qwen3-VL-Embedding-2B", "Qwen/Qwen3-VL-Embedding-8B"], type=str)
     parser.add_argument('--db_path', type=Path)
+    parser.add_argument('--retrieval_results_path_prefix', type=Path)
     args = parser.parse_args()    
 
     recall(args)

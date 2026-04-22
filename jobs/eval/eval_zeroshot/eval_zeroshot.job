@@ -27,6 +27,7 @@ uv run scripts/eval/eval_zeroshot/eval_artcir.py \
     --annotation_path_prefix ./data/artcir/annotations \
     --image_path_prefix ./data/artcir/images \
     --split $SPLIT \
-    --db_path ./data/artcir/database/embeddings_zeroshot.db
+    --db_path ./data/artcir/database/embeddings_zeroshot.db \
+    --retrieval_results_path_prefix ./outputs/eval
 
 echo "Job finished at $(date)"
