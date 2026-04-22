@@ -29,6 +29,7 @@ classifiers = [
 dependencies = [
     "pymilvus[milvus-lite]>=2.6.12",
     "qwen3-vl-embedding",
+    "setuptools<82",
 ]
 
 # Optional extras: for features not all users need, e.g. pip install ArtCIR-thesis[viz].
